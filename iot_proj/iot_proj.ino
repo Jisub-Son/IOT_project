@@ -19,7 +19,7 @@ WiFiClientSecure httpsClient;
 const char *host = "kr.api.riotgames.com";
 const int httpsPort = 443;
 String apiAddr = "/lol/summoner/v4/summoners/by-name/";
-String summoner = "54720857del";
+String summoner = "도비준";
 String apiKey = "RGAPI-2b6e0c3f-3416-4563-af8d-7934e9acb8f3";
 
 // SHA1 fingerprint
@@ -61,8 +61,9 @@ void setup()
   }
 
   // Get data
-  String link;
-  link = "/lol/summoner/v4/summoners/by-name/도비준?api_key=RGAPI-2b6e0c3f-3416-4563-af8d-7934e9acb8f3";
+  String link, link2;
+//  link = "/lol/summoner/v4/summoners/by-name/도비준?api_key=RGAPI-2b6e0c3f-3416-4563-af8d-7934e9acb8f3";
+  link = apiAddr + summoner + "?api_key=" + apiKey;
 
   httpsClient.print(String("GET ") + link + " HTTP/1.1\r\n" +
                     "Host: " + host + "\r\n" +
