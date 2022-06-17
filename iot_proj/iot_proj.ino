@@ -6,6 +6,10 @@ WiFiClientSecure httpsClient;
 
 #define WIFI_SSID "U+Net9700"
 #define WIFI_PWD  "HB797@0FE6"
+//#define WIFI_SSID "ipTIME Guest1"
+//#define WIFI_PWD  "12341234"
+
+
 //#define HOST      "kr.api.riotgames.com"
 //#define PORT      443
 //#define API_ADDR  "/lol/summoner/v4/summoners/by-name/"
@@ -19,7 +23,8 @@ String summoner = "54720857del";
 String apiKey = "RGAPI-2b6e0c3f-3416-4563-af8d-7934e9acb8f3";
 
 // SHA1 fingerprint
-const char fingerprint[] PROGMEM = "2d 1c aa 62 c5 2f c7 0d 44 50 1a 1c b4 1b 45 f9 9e 27 a4 c7";
+// const char fingerprint[] PROGMEM = "2d 1c aa 62 c5 2f c7 0d 44 50 1a 1c b4 1b 45 f9 9e 27 a4 c7";
+// 이거 필요 없어요
 
 void setup()
 {
@@ -36,13 +41,17 @@ void setup()
     delay(500);
   }
   Serial.printf("\r\nWiFi Connected..!\r\n");
-
+  
+  /*이거 필요 없음
   // set fingerprint and timeout
   Serial.printf("Using fingerprint '%s'\r\n", fingerprint);
   httpsClient.setFingerprint(fingerprint);
   httpsClient.setTimeout(15000); // 15 Seconds
   delay(1000);
-
+  */
+  httpsClient.setInsecure();    //이거면 그냥 
+  delay(1000);
+  
   // https connecting
   if(httpsClient.connect(host, httpsPort)){
     Serial.printf("Connected to web\r\n");
