@@ -49,7 +49,7 @@ void setup()
   httpsClient.setTimeout(15000); // 15 Seconds
   delay(1000);
   */
-  httpsClient.setInsecure();    //이거면 그냥 
+  httpsClient.setInsecure();    //이거면 그냥 넘겨지는듯.
   delay(1000);
   
   // https connecting
