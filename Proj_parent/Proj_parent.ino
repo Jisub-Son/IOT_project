@@ -3,8 +3,23 @@
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
 #include <ESP8266Webhook.h>
+#include <ESP8266WebServer.h>
+#include <PubSubClient.h>
 
+// 지섭 1738848
+#define SECRET_MQTT_USERNAME_SJS "Ix4oExgcHzgaIzkYCRYmGQ4"
+#define SECRET_MQTT_CLIENT_ID_SJS "Ix4oExgcHzgaIzkYCRYmGQ4"
+#define SECRET_MQTT_PASSWORD_SJS "nsLL7mJ1yCUQPdDmgkt5SKzO"
+
+// 성범 1737977
+#define SECRET_MQTT_CLIENT_ID "EjolJjkAGiYCISw5AhQZKxw"
+#define SECRET_MQTT_USERNAME "EjolJjkAGiYCISw5AhQZKxw"
+#define SECRET_MQTT_PASSWORD "CCEYGlQuMgjHXaOpjDXIiK7L"
+
+WiFiClient myClient;
 WiFiClientSecure httpsClient;
+ESP8266WebServer httpServer(80);
+PubSubClient mqttClient;
 
 #define WIFI_SSID "MJU_Wireless"
 #define WIFI_PWD  ""
@@ -35,6 +50,35 @@ String enc_id = "QJoWwcX_a6_ZKD1izgitCM4Es_PLAOa--wWcjsov8VbOBA"; //친구 ID
 int login_stat;
 long long game_id = 0;
 
+void fnRoot(void)
+{
+  char tmpBuffer[2000];
+  strcpy(tmpBuffer, "<html>\r\n");
+  strcat(tmpBuffer, "I trust u Son..<br>\r\n");
+  strcat(tmpBuffer, "<a href=/status>check game state</a><br>\r\n");
+  strcat(tmpBuffer, "<a href=/sendMsg>send message</a><br>\r\n");
+  snprintf(tmpBuffer, sizeof(tmpBuffer), "%s%s", tmpBuffer, "</html>");
+  httpServer.send(200, "text/html", tmpBuffer);
+}
+
+void fnStatus(void)
+{
+  Serial.printf("status cb function\r\n");
+  httpServer.send(200, "text/html", "Not yet");
+}
+
+void fnSendMsg(void)
+{
+  Serial.printf("sendMsg cb function\r\n");
+  httpServer.send(200, "text/html", "send Message");
+  mqttClient.publish("channels/1738848/publish/fields/field2", "1");
+}
+
+void fnNotFound(void)
+{
+  httpServer.send(404, "text/plain", "WRONG!!!");
+}
+
 void setup()
 {
   // Set UART
@@ -55,7 +99,7 @@ void setup()
   }
   Serial.printf("\r\nWiFi Connected..!\r\n");
   httpsClient.setInsecure();
-  delay(1000);
+  delay(500);
   
   // https connecting
   if(httpsClient.connect(host, httpsPort)){
@@ -65,6 +109,26 @@ void setup()
     Serial.printf("Connection failed\r\n");
   }
 
+  // Get local IP
+  Serial.printf("Please contact IP Addr...");
+  Serial.println(WiFi.localIP());
+
+  // Callback functions & start web server
+  httpServer.on("/", fnRoot);
+  httpServer.on("/status", fnStatus);
+  httpServer.on("/sendMsg", fnSendMsg);
+  httpServer.onNotFound(fnNotFound);
+  httpServer.begin();
+  
+  // Connect MQTT 
+  Serial.println("MQTT Connect...");
+  mqttClient.setClient(myClient);
+  mqttClient.setServer("mqtt3.thingspeak.com", 1883);  // Set MQTT server and port
+//  mqttClient.setCallback(cbFunc);                     // Set Callback function  
+  int mqttConResult = mqttClient.connect(SECRET_MQTT_CLIENT_ID_SJS, SECRET_MQTT_USERNAME_SJS, SECRET_MQTT_PASSWORD_SJS);
+//  mqttClient.subscribe("channels/1738848/subscribe/fields/field2");        // Subscribe topic
+  Serial.printf("MQTT Conn Result : %d\r\n", mqttConResult);
+  
   // Get data
   String link, link2;
   link = apiAddr + summoner + "?api_key=" + apiKey;
@@ -131,5 +195,5 @@ unsigned long long prev = 0;
 
 void loop()
 {
-  
+  httpServer.handleClient();
 }
