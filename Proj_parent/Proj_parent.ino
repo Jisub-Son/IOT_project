@@ -2,6 +2,7 @@
 #include <WiFiClientSecure.h> 
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
+#include <ESP8266Webhook.h>
 
 WiFiClientSecure httpsClient;
 
@@ -12,11 +13,14 @@ WiFiClientSecure httpsClient;
 //#define WIFI_SSID "ipTIME Guest1"
 //#define WIFI_PWD  "12341234"
 
+#define IFTTT_WH_KEY "ctPKZOb5dEI3PetYB3amwa"
+
 //LED 포트 번호
 #define REDLED_PORT 13
 #define GRNLED_PORT 15
 
 DynamicJsonDocument doc(8192);
+Webhook webhook(IFTTT_WH_KEY, "Proj_parent");
 
 const char *host = "kr.api.riotgames.com";
 const int httpsPort = 443;
@@ -26,8 +30,8 @@ String apiKey = "RGAPI-2b6e0c3f-3416-4563-af8d-7934e9acb8f3";
 
 //접속 API용 변수들
 String api_login = "/lol/spectator/v4/active-games/by-summoner/";
-//String enc_id = "f0OBDw_rm2OjbLxm6TM-_S_21es6ZEF1jFtAxIfVYwe4hg";
-String enc_id = "QJoWwcX_a6_ZKD1izgitCM4Es_PLAOa--wWcjsov8VbOBA";
+//String enc_id = "f0OBDw_rm2OjbLxm6TM-_S_21es6ZEF1jFtAxIfVYwe4hg"; //성범ID
+String enc_id = "QJoWwcX_a6_ZKD1izgitCM4Es_PLAOa--wWcjsov8VbOBA"; //친구 ID
 int login_stat;
 long long game_id = 0;
 
@@ -117,6 +121,7 @@ void setup()
   if(game_id != 0){
     Serial.println("축하드립니다! 자녀분이 게임중입니다!");
     digitalWrite(REDLED_PORT,HIGH);
+    webhook.trigger();
   }
   Serial.printf("%d\r\n",login_stat);
   Serial.printf("%lld\r\n",game_id);
