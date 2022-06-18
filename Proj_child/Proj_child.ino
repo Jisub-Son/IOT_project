@@ -100,10 +100,10 @@ void loop()
       Serial.printf("SHOTGUN..! : %d\r\n", AcZ);
 
       // publish to thingspeak server by MQTT publish
-      char str[80];
-      sprintf(str, "%d", shotgun);
-      mqttClient.publish("channels/1738848/publish/fields/field1", str);
-      Serial.printf("send?\r\n");
+      char strBuf[80];
+      sprintf(strBuf, "%d", shotgun);
+      mqttClient.publish("channels/1738848/publish/fields/field1", strBuf);
+//      Serial.printf("send?\r\n");
     }
     before = cur;
   }
