@@ -1,5 +1,6 @@
 #include <Wire.h>
 #include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
 #include <PubSubClient.h>
 #include <ESP8266Webhook.h>
 #include "mqtt_secrets.h"
@@ -20,6 +21,7 @@ int before = 0;
 
 WiFiClient myClient;
 PubSubClient mqttClient;
+HTTPClient httpClient;
 Webhook webhook(IFTTT_KEY, IFTTT_EVENT);  // create an object
 
 void cbFunc(const char topic[], byte* data, unsigned int length) 
@@ -30,7 +32,7 @@ void cbFunc(const char topic[], byte* data, unsigned int length)
     str[i] = data[i];
   }
   str[i] = 0; 
-
+  Serial.println("working?");
   int STOPGAME = atoi(str);
   Serial.printf("callback : %d\r\n", STOPGAME);
 //  !strcmp(str, "STOPGAME")
@@ -66,10 +68,10 @@ void setup()
   // Connect MQTT 
   Serial.println("MQTT Connect...");
   mqttClient.setClient(myClient);
-  mqttClient.setServer("mqtt3.thingspeak.com",1883);  // Set MQTT server and port
+  mqttClient.setServer("mqtt3.thingspeak.com", 1883);  // Set MQTT server and port
   mqttClient.setCallback(cbFunc);                     // Set Callback function  
   int mqttConResult = mqttClient.connect(SECRET_MQTT_CLIENT_ID, SECRET_MQTT_USERNAME, SECRET_MQTT_PASSWORD);
-  mqttClient.subscribe("channels/1738848/subcribe/fields/field2");        // Subscribe topic
+  mqttClient.subscribe("channels/1738848/subscribe/fields/field2");        // Subscribe topic
   Serial.printf("MQTT Conn Result : %d\r\n", mqttConResult);
 }
 
@@ -99,11 +101,17 @@ void loop()
       int shotgun = 1;
       Serial.printf("SHOTGUN..! : %d\r\n", AcZ);
 
-      // publish to thingspeak server by MQTT publish
-      char strBuf[80];
-      sprintf(strBuf, "%d", shotgun);
-      mqttClient.publish("channels/1738848/publish/fields/field1", strBuf);
-//      Serial.printf("send?\r\n");
+      // publish to thingspeak server by HTTP
+      char tempBuf[200];
+      snprintf(tempBuf, sizeof(tempBuf),  "http://api.thingspeak.com/update?api_key=3S60JT6R86PHSG3S&field1=%d", shotgun);
+      httpClient.begin(myClient, tempBuf);
+      httpClient.GET();
+      httpClient.getString();
+      httpClient.end();
+      // publish to thingspeak server by MQTT
+//      char strBuf[80];
+//      sprintf(strBuf, "%d", shotgun);
+//      int pubResult = mqttClient.publish("channels/1738848/publish/fields/field1", strBuf);
     }
     before = cur;
   }
