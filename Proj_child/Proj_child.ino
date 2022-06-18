@@ -3,7 +3,6 @@
 #include <ESP8266HTTPClient.h>
 #include <PubSubClient.h>
 #include <ESP8266Webhook.h>
-//#include "mqtt_secrets.h" //성범 
 
 #define SECRET_MQTT_CLIENT_ID "EjolJjkAGiYCISw5AhQZKxw"
 #define SECRET_MQTT_USERNAME "EjolJjkAGiYCISw5AhQZKxw"
@@ -36,11 +35,9 @@ void cbFunc(const char topic[], byte* data, unsigned int length)
     str[i] = data[i];
   }
   str[i] = 0; 
-//  Serial.println("working?");
   int STOPGAME = atoi(str);
-  Serial.printf("callback : %d\r\n", STOPGAME);
-//  !strcmp(str, "STOPGAME")
-  if(STOPGAME == 1){       // if str == TEMP publish temp data
+  
+  if(STOPGAME == 1){       
     Serial.println("revceived STOPGAME..!");
     webhook.trigger();
   }
@@ -52,7 +49,7 @@ void setup()
   Serial.begin(115200);
   delay(500);
   Serial.printf("UART OK\r\n");
-  Serial.printf(SECRET_MQTT_CLIENT_ID);
+  
   // Set 12C wake-up
   Wire.begin(4, 5);                 // Set as Master SDA : GPIO4, SCL : GPIO5
   Wire.beginTransmission(MPU_Addr); // transmit to MPU6050
@@ -104,16 +101,8 @@ void loop()
     if(cur == 1 && before == 0){
       int shotgun = 1;
       Serial.printf("SHOTGUN..! : %d\r\n", AcZ);
-/*
-      // publish to thingspeak server by HTTP
-      char tempBuf[200];
-      snprintf(tempBuf, sizeof(tempBuf),  "http://api.thingspeak.com/update?api_key=3S60JT6R86PHSG3S&field1=%d", shotgun);
-      httpClient.begin(myClient, tempBuf);
-      httpClient.GET();
-      httpClient.getString();
-      httpClient.end();
-*/
-        // publish to thingspeak server by MQTT
+
+      // publish to thingspeak server by MQTT
       char strBuf[80];
       sprintf(strBuf, "%d", shotgun);
       int pubResult = mqttClient.publish("channels/1737977/publish/fields/field1", strBuf);
