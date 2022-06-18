@@ -36,7 +36,7 @@ void cbFunc(const char topic[], byte* data, unsigned int length)
     str[i] = data[i];
   }
   str[i] = 0; 
-  Serial.println("working?");
+//  Serial.println("working?");
   int STOPGAME = atoi(str);
   Serial.printf("callback : %d\r\n", STOPGAME);
 //  !strcmp(str, "STOPGAME")
@@ -52,7 +52,7 @@ void setup()
   Serial.begin(115200);
   delay(500);
   Serial.printf("UART OK\r\n");
-
+  Serial.printf(SECRET_MQTT_CLIENT_ID);
   // Set 12C wake-up
   Wire.begin(4, 5);                 // Set as Master SDA : GPIO4, SCL : GPIO5
   Wire.beginTransmission(MPU_Addr); // transmit to MPU6050
