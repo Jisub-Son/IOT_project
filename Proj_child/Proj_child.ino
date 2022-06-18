@@ -3,7 +3,11 @@
 #include <ESP8266HTTPClient.h>
 #include <PubSubClient.h>
 #include <ESP8266Webhook.h>
-#include "mqtt_secrets.h"
+//#include "mqtt_secrets.h" //성범 
+
+#define SECRET_MQTT_CLIENT_ID "EjolJjkAGiYCISw5AhQZKxw"
+#define SECRET_MQTT_USERNAME "EjolJjkAGiYCISw5AhQZKxw"
+#define SECRET_MQTT_PASSWORD "CCEYGlQuMgjHXaOpjDXIiK7L"
 
 //#define WIFI_SSID "U+Net9700"
 //#define WIFI_PWD  "HB797@0FE6"
@@ -71,7 +75,7 @@ void setup()
   mqttClient.setServer("mqtt3.thingspeak.com", 1883);  // Set MQTT server and port
   mqttClient.setCallback(cbFunc);                     // Set Callback function  
   int mqttConResult = mqttClient.connect(SECRET_MQTT_CLIENT_ID, SECRET_MQTT_USERNAME, SECRET_MQTT_PASSWORD);
-  mqttClient.subscribe("channels/1738848/subscribe/fields/field2");        // Subscribe topic
+  mqttClient.subscribe("channels/1737977/subscribe/fields/field2");        // Subscribe topic
   Serial.printf("MQTT Conn Result : %d\r\n", mqttConResult);
 }
 
@@ -100,7 +104,7 @@ void loop()
     if(cur == 1 && before == 0){
       int shotgun = 1;
       Serial.printf("SHOTGUN..! : %d\r\n", AcZ);
-
+/*
       // publish to thingspeak server by HTTP
       char tempBuf[200];
       snprintf(tempBuf, sizeof(tempBuf),  "http://api.thingspeak.com/update?api_key=3S60JT6R86PHSG3S&field1=%d", shotgun);
@@ -108,10 +112,11 @@ void loop()
       httpClient.GET();
       httpClient.getString();
       httpClient.end();
-      // publish to thingspeak server by MQTT
-//      char strBuf[80];
-//      sprintf(strBuf, "%d", shotgun);
-//      int pubResult = mqttClient.publish("channels/1738848/publish/fields/field1", strBuf);
+*/
+        // publish to thingspeak server by MQTT
+      char strBuf[80];
+      sprintf(strBuf, "%d", shotgun);
+      int pubResult = mqttClient.publish("channels/1737977/publish/fields/field1", strBuf);
     }
     before = cur;
   }
