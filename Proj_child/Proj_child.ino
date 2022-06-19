@@ -4,20 +4,32 @@
 #include <PubSubClient.h>
 #include <ESP8266Webhook.h>
 
+// 지섭 1773654
+//#define SECRET_MQTT_USERNAME "DiQ8HD0KNwkbAzk0LhAjAjg"
+//#define SECRET_MQTT_CLIENT_ID "DiQ8HD0KNwkbAzk0LhAjAjg"
+//#define SECRET_MQTT_PASSWORD "Q8Ic0yorQHEBe7FF9cYhOjTe"
+
+// 지섭 1738848
+//#define SECRET_MQTT_USERNAME "Ix4oExgcHzgaIzkYCRYmGQ4"
+//#define SECRET_MQTT_CLIENT_ID "Ix4oExgcHzgaIzkYCRYmGQ4"
+//#define SECRET_MQTT_PASSWORD "nsLL7mJ1yCUQPdDmgkt5SKzO"
+
+// 성범 1737977
 #define SECRET_MQTT_CLIENT_ID "EjolJjkAGiYCISw5AhQZKxw"
 #define SECRET_MQTT_USERNAME "EjolJjkAGiYCISw5AhQZKxw"
 #define SECRET_MQTT_PASSWORD "CCEYGlQuMgjHXaOpjDXIiK7L"
 
-//#define WIFI_SSID "U+Net9700"
-//#define WIFI_PWD  "HB797@0FE6"
-#define WIFI_SSID "MJU_Wireless"
-#define WIFI_PWD  ""
-#define IFTTT_KEY "TAHf6d1iVRTvH1yfFsaBd"
+#define WIFI_SSID "U+Net9700"
+#define WIFI_PWD  "HB797@0FE6"
+//#define WIFI_SSID "MJU_Wireless"
+//#define WIFI_PWD  ""
+
+// 지섭
+#define IFTTT_KEY_SJS "TAHf6d1iVRTvH1yfFsaBd"
 #define IFTTT_EVENT "mom_sayed"
 
 int MPU_Addr = 0x68;
 int16_t AcZ;
-
 unsigned long long prev = 0;
 int cur = 0;
 int before = 0;
@@ -25,10 +37,11 @@ int before = 0;
 WiFiClient myClient;
 PubSubClient mqttClient;
 HTTPClient httpClient;
-Webhook webhook(IFTTT_KEY, IFTTT_EVENT);  // create an object
+Webhook webhook(IFTTT_KEY_SJS, IFTTT_EVENT);  // create an object
 
 void cbFunc(const char topic[], byte* data, unsigned int length) 
-{  
+{
+  Serial.printf("call back function\r\n");
   char str[9];
   int i;
   for(i=0; i<=(7<length-1?7:length-1); i++){   // Read data to str
@@ -106,6 +119,7 @@ void loop()
       char strBuf[80];
       sprintf(strBuf, "%d", shotgun);
       int pubResult = mqttClient.publish("channels/1737977/publish/fields/field1", strBuf);
+      Serial.printf("Pubresult %d\r\n", pubResult);
     }
     before = cur;
   }
