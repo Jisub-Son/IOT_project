@@ -44,7 +44,7 @@ String apiKey = "RGAPI-2b6e0c3f-3416-4563-af8d-7934e9acb8f3";
 
 String summoner = "섬%20벙"; //초기 추적 닉네임 '추적닉네임'
 String summoner_show = "섬 벙"; //초기 추적 닉네임의 웹서버 표시명 '표시닉네임'
-String summoner = ""; //새로 추적할 닉네임 '변경닉네임'
+String summoner_new = ""; //새로 추적할 닉네임 '변경닉네임'
 
 String line;
 
