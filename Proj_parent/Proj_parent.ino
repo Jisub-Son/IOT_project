@@ -48,6 +48,8 @@ String summoner_new = ""; //새로 추적할 닉네임 '변경닉네임'
 
 String line;
 
+char tmpBuffer[2000];
+
 //접속 API용 변수들
 String api_login = "/lol/spectator/v4/active-games/by-summoner/";
 String enc_id = "f0OBDw_rm2OjbLxm6TM-_S_21es6ZEF1jFtAxIfVYwe4hg"; //성범ID
