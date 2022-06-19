@@ -157,7 +157,7 @@ void fnNotFound(void) {
 //enc_id API
 void get_enc(){
   digitalWrite(REDLED_PORT, LOW);
-  digitalWrite(REDLED_PORT, LOW);
+  digitalWrite(GRNLED_PORT, LOW);
   // https connecting
   if(httpsClient.connect(host, httpsPort)){
     Serial.printf("Connected to web\r\n");
