@@ -21,6 +21,8 @@
 
 #define WIFI_SSID "U+Net9700"
 #define WIFI_PWD  "HB797@0FE6"
+//#define WIFI_SSID "ipTIME Guest1"
+//#define WIFI_PWD  "12341234"
 //#define WIFI_SSID "MJU_Wireless"
 //#define WIFI_PWD  ""
 
