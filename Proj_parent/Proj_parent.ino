@@ -23,9 +23,8 @@
 
 // define IFTTT
 #define IFTTT_WH_KEY "ctPKZOb5dEI3PetYB3amwa"
-#define IFTTT_KEY_SJS "TAHf6d1iVRTvH1yfFsaBd"
-Webhook webhook_web_pc(IFTTT_KEY_SJS, "open_web_pc");
-Webhook webhook_web_phone(IFTTT_KEY_SJS, "open_web_phone");
+Webhook webhook_web_phone(IFTTT_WH_KEY, "open_web_phone");
+Webhook webhook(IFTTT_WH_KEY, "Proj_parent");
 
 // define LED port
 #define REDLED_PORT 13  //D7
@@ -36,7 +35,6 @@ WiFiClientSecure httpsClient;
 ESP8266WebServer httpServer(80);
 PubSubClient mqttClient;
 DynamicJsonDocument doc(8192);
-Webhook webhook(IFTTT_WH_KEY, "Proj_parent");
 
 const char *host = "kr.api.riotgames.com";
 const int httpsPort = 443;
@@ -316,8 +314,6 @@ void setup()
   Serial.printf("Please contact IP Addr...");
   Serial.println(WiFi.localIP());
   webhook_web_phone.trigger(WiFi.localIP().toString());
-//  delay(500);
-//  webhook_web_pc.trigger(WiFi.localIP().toString());
 }
 
 void loop()
