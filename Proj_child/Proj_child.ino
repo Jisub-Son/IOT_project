@@ -9,6 +9,7 @@
 #define SECRET_MQTT_USERNAME "EjolJjkAGiYCISw5AhQZKxw"
 #define SECRET_MQTT_PASSWORD "CCEYGlQuMgjHXaOpjDXIiK7L"
 
+// define WiFi
 #define WIFI_SSID "U+Net9700"
 #define WIFI_PWD  "HB797@0FE6"
 //#define WIFI_SSID "ipTIME Guest1"
@@ -16,6 +17,7 @@
 //#define WIFI_SSID "MJU_Wireless"
 //#define WIFI_PWD  ""
 
+// define IFTTT
 #define IFTTT_KEY_SJS "TAHf6d1iVRTvH1yfFsaBd"
 #define IFTTT_EVENT "mom_sayed"
 
@@ -30,6 +32,7 @@ PubSubClient mqttClient;
 HTTPClient httpClient;
 Webhook webhook(IFTTT_KEY_SJS, IFTTT_EVENT);  // create an object
 
+// MQTT Callback Function
 void cbFunc(const char topic[], byte* data, unsigned int length)
 {
   Serial.printf("call back function\r\n");
@@ -43,7 +46,7 @@ void cbFunc(const char topic[], byte* data, unsigned int length)
 
   if (STOPGAME == 1) {
     Serial.println("revceived STOPGAME..!");
-    webhook.trigger();
+    webhook.trigger();    // Send notification to child phone
   }
 }
 
@@ -56,9 +59,9 @@ void setup()
 
   // Set 12C wake-up
   Wire.begin(4, 5);                 // Set as Master SDA : GPIO4, SCL : GPIO5
-  Wire.beginTransmission(MPU_Addr); // transmit to MPU6050
+  Wire.beginTransmission(MPU_Addr); // Transmit to MPU6050
   Wire.write(0x6B);                 // Reg. Power Management
-  Wire.write(1);                    // wake-up MPU6050
+  Wire.write(1);                    // Wake-up MPU6050
   Wire.endTransmission();
 
   // Connect WiFi
@@ -73,8 +76,8 @@ void setup()
   // Connect MQTT
   Serial.println("MQTT Connect...");
   mqttClient.setClient(myClient);
-  mqttClient.setServer("mqtt3.thingspeak.com", 1883);  // Set MQTT server and port
-  mqttClient.setCallback(cbFunc);                     // Set Callback function
+  mqttClient.setServer("mqtt3.thingspeak.com", 1883);   // Set MQTT server and port
+  mqttClient.setCallback(cbFunc);                       // Set Callback function
   int mqttConResult = mqttClient.connect(SECRET_MQTT_CLIENT_ID, SECRET_MQTT_USERNAME, SECRET_MQTT_PASSWORD);
   mqttClient.subscribe("channels/1737977/subscribe/fields/field2");        // Subscribe topic
   Serial.printf("MQTT Conn Result : %d\r\n", mqttConResult);
@@ -92,7 +95,7 @@ void loop()
 
     Wire.requestFrom(MPU_Addr, 2, true); // Request 2Byte data
     AcZ = Wire.read() << 8 | Wire.read(); // ACCEL_ZOUT
-    //    Serial.printf("%d\r\n", AcZ);
+//    Serial.printf("%d\r\n", AcZ);
 
     // Set shotgun 1 when gamer smashed the desk
     if (AcZ >= 20000) {

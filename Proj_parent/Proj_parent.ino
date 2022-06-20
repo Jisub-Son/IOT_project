@@ -11,11 +11,7 @@
 #define SECRET_MQTT_USERNAME "CCIXBCQpODsWChQBCTAABho"
 #define SECRET_MQTT_PASSWORD "JInyrhufB+vNJfGmIf/6Tl8H"
 
-WiFiClient myClient;
-WiFiClientSecure httpsClient;
-ESP8266WebServer httpServer(80);
-PubSubClient mqttClient;
-
+// define WiFi
 //#define WIFI_SSID "MJU_Wireless"
 //#define WIFI_PWD  ""
 #define WIFI_SSID "U+Net9700"
@@ -23,12 +19,20 @@ PubSubClient mqttClient;
 //#define WIFI_SSID "ipTIME Guest1"
 //#define WIFI_PWD  "12341234"
 
+// define IFTTT
 #define IFTTT_WH_KEY "ctPKZOb5dEI3PetYB3amwa"
+#define IFTTT_KEY_SJS "TAHf6d1iVRTvH1yfFsaBd"
+Webhook webhook_web_pc(IFTTT_KEY_SJS, "open_web_pc");
+Webhook webhook_web_phone(IFTTT_KEY_SJS, "open_web_phone");
 
-//LED 포트 번호
+// define LED port
 #define REDLED_PORT 13  //D7
 #define GRNLED_PORT 15  //D8
 
+WiFiClient myClient;
+WiFiClientSecure httpsClient;
+ESP8266WebServer httpServer(80);
+PubSubClient mqttClient;
 DynamicJsonDocument doc(8192);
 Webhook webhook(IFTTT_WH_KEY, "Proj_parent");
 
@@ -37,21 +41,20 @@ const int httpsPort = 443;
 String apiAddr = "/lol/summoner/v4/summoners/by-name/";
 String apiKey = "RGAPI-1280cd2e-5488-44c8-9b00-5a379eff9df7";
 
-String summoner = "섬%20벙"; //초기 추적 닉네임 '추적닉네임'
+String summoner = "섬%20벙";    //초기 추적 닉네임 '추적닉네임'
 String summoner_show = "섬 벙"; //초기 추적 닉네임의 웹서버 표시명 '표시닉네임'
-String summoner_new = ""; //새로 추적할 닉네임 '변경닉네임'
+String summoner_new = "";       //새로 추적할 닉네임 '변경닉네임'
 
 String line;
-
 char tmpBuffer[2000];
 
-//접속 API용 변수들
+// 접속 API용 변수들
 String api_login = "/lol/spectator/v4/active-games/by-summoner/";
 String enc_id = "f0OBDw_rm2OjbLxm6TM-_S_21es6ZEF1jFtAxIfVYwe4hg"; //성범ID
 int login_stat;
 long long game_id = 0;
 
-//MQTT Callback Function
+// MQTT Callback Function
 void cbFunc(const char topic[], byte* data, unsigned int length) {
   Serial.printf("call back function\r\n");
   char str[9];
@@ -69,7 +72,7 @@ void cbFunc(const char topic[], byte* data, unsigned int length) {
   }
 }
 
-//Root 페이지
+// Root 페이지
 void fnRoot(void) {
   //'변경닉네임'이 있을 경우 변경
   if (httpServer.hasArg("nickname")) {
@@ -96,6 +99,7 @@ void fnRoot(void) {
   snprintf(tmpBuffer, sizeof(tmpBuffer), "%s%s", tmpBuffer, "</html>");
   httpServer.send(200, "text/html", tmpBuffer);
 }
+
 //추적 페이지
 void fnStatus(void) {
   get_enc();
@@ -133,6 +137,7 @@ void fnStatus(void) {
     httpServer.send(200, "text/html", tmpBuffer);
   }
 }
+
 //메세지 전송 페이지
 void fnSendMsg(void) {
   strcpy(tmpBuffer, "<meta charset=utf-8><html>\r\n");                   //한글표시가능
@@ -145,6 +150,7 @@ void fnSendMsg(void) {
   int pubResult = mqttClient.publish("channels/1737977/publish/fields/field2", "1");    //MQTT Field2에 PUB
   Serial.printf("pubResult : %d\r\n", pubResult);
 }
+
 //오류 페이지
 void fnNotFound(void) {
   httpServer.send(404, "text/plain", "WRONG!!!");
@@ -196,6 +202,7 @@ void get_enc(){
   Serial.println("==========");
   Serial.printf("enc_id : %s\r\n",enc_id.c_str());
 }
+
 //접속상태 API
 void get_login(){
   // https connecting
@@ -249,16 +256,17 @@ void get_login(){
   Serial.printf("%lld\r\n",game_id);
 }
 
-
 void setup()
 {
   // Set UART
   Serial.begin(115200);
   delay(500);
   Serial.printf("UART OK\r\n");
+  
   //LED 설정
   pinMode(GRNLED_PORT,OUTPUT);
   pinMode(REDLED_PORT,OUTPUT);
+  
   // Connect WiFi
   Serial.printf("WiFi connecting");
   WiFi.begin(WIFI_SSID, WIFI_PWD);              // connect to AP
@@ -269,10 +277,6 @@ void setup()
   Serial.printf("\r\nWiFi Connected..!\r\n");
   httpsClient.setInsecure();
   delay(500);
-  
-  // Get local IP
-  Serial.printf("Please contact IP Addr...");
-  Serial.println(WiFi.localIP());
 
   // Callback functions & start web server
   httpServer.on("/", fnRoot);
@@ -289,6 +293,13 @@ void setup()
   int mqttConResult = mqttClient.connect(SECRET_MQTT_CLIENT_ID, SECRET_MQTT_USERNAME, SECRET_MQTT_PASSWORD);
   mqttClient.subscribe("channels/1737977/subscribe/fields/field1");        // Subscribe topic
   Serial.printf("MQTT Conn Result : %d\r\n", mqttConResult);
+
+  // Get local IP
+  Serial.printf("Please contact IP Addr...");
+  Serial.println(WiFi.localIP());
+  webhook_web_phone.trigger(WiFi.localIP().toString());
+  delay(500);
+  webhook_web_pc.trigger(WiFi.localIP().toString());
 }
 
 void loop()
