@@ -39,7 +39,8 @@ Webhook webhook(IFTTT_WH_KEY, "Proj_parent");
 const char *host = "kr.api.riotgames.com";
 const int httpsPort = 443;
 String apiAddr = "/lol/summoner/v4/summoners/by-name/";
-String apiKey = "RGAPI-1280cd2e-5488-44c8-9b00-5a379eff9df7";
+String apiKey = "RGAPI-2b6e0c3f-3416-4563-af8d-7934e9acb8f3";   // -> 만료됨
+//String apiKey = "RGAPI-1280cd2e-5488-44c8-9b00-5a379eff9df7"; // -> 재발급한 key : 웹서버에서 복붙하세요
 
 String summoner = "섬%20벙";    //초기 추적 닉네임 '추적닉네임'
 String summoner_show = "섬 벙"; //초기 추적 닉네임의 웹서버 표시명 '표시닉네임'
@@ -83,16 +84,31 @@ void fnRoot(void) {
       summoner.replace(" ","%20");    //'추적닉네임'내 스페이스바(" ")를 "%20"으로 변환
     }
   }
+
+  // API KEY 변경
+  if (httpServer.hasArg("apikey")) {
+    String apikey_new = httpServer.arg("apikey");
+    if (apikey_new != "") {
+      apiKey = apikey_new;
+    }
+  }
+  
   //Root 페이지 구성
   strcpy(tmpBuffer, "<meta charset=utf-8><html>\r\n");                    //한글표시가능
   strcat(tmpBuffer, "<img src=\"https:/");                                //이미지 출력
   strcat(tmpBuffer, "/d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/109/500e73934f2f3218accefd04c72bc6b3_crop.jpeg\"><br>\r\n");
   strcat(tmpBuffer, "엄마는 우리아들 믿어...<br>\r\n");                     //일반텍스트 출력
-  strcat(tmpBuffer, "확인하려는 닉네임 :");                                 //일반텍스트 출력
+  strcat(tmpBuffer, "확인하려는 닉네임 : ");                                 //일반텍스트 출력
   strcat(tmpBuffer, summoner_show.c_str());                               //'표시닉네임' 출력
   strcat(tmpBuffer, "<br>\r\n");
   strcat(tmpBuffer, "<form method=\"get\" action=\"\">");                 //'변경닉네임'용 input박스 생성
   strcat(tmpBuffer, "닉네임 <input type=\"text\" name=\"nickname\" >");
+  strcat(tmpBuffer, "<input type=\"submit\" ></form>\r\n");
+  strcat(tmpBuffer, "현재 API KEY : ");                                 //일반텍스트 출력
+  strcat(tmpBuffer, apiKey.c_str());                                    //'apiKey' 출력
+  strcat(tmpBuffer, "<br>\r\n");
+  strcat(tmpBuffer, "<form method=\"get\" action=\"\">");                 //'변경 API KEY'용 input박스 생성
+  strcat(tmpBuffer, "API KEY <input type=\"text\" name=\"apikey\" >");
   strcat(tmpBuffer, "<input type=\"submit\" ></form>\r\n");
   strcat(tmpBuffer, "<a href=/status>게임 접속 확인</a><br>\r\n");          //status 페이지 링크
   strcat(tmpBuffer, "<a href=/sendMsg>중단 메세지 전송</a><br>\r\n");       //sendMsg 페이지 링크
@@ -298,8 +314,8 @@ void setup()
   Serial.printf("Please contact IP Addr...");
   Serial.println(WiFi.localIP());
   webhook_web_phone.trigger(WiFi.localIP().toString());
-  delay(500);
-  webhook_web_pc.trigger(WiFi.localIP().toString());
+//  delay(500);
+//  webhook_web_pc.trigger(WiFi.localIP().toString());
 }
 
 void loop()
