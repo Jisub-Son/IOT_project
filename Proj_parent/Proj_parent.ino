@@ -6,25 +6,20 @@
 #include <ESP8266WebServer.h>
 #include <PubSubClient.h>
 
-// 지섭 1738848
-#define SECRET_MQTT_USERNAME_SJS "Ix4oExgcHzgaIzkYCRYmGQ4"
-#define SECRET_MQTT_CLIENT_ID_SJS "Ix4oExgcHzgaIzkYCRYmGQ4"
-#define SECRET_MQTT_PASSWORD_SJS "nsLL7mJ1yCUQPdDmgkt5SKzO"
-
-// 성범 1737977
-#define SECRET_MQTT_CLIENT_ID "EjolJjkAGiYCISw5AhQZKxw"
-#define SECRET_MQTT_USERNAME "EjolJjkAGiYCISw5AhQZKxw"
-#define SECRET_MQTT_PASSWORD "CCEYGlQuMgjHXaOpjDXIiK7L"
+// channel : MJU_IOT(1737977), device : MQTT_4SJS
+#define SECRET_MQTT_CLIENT_ID "CCIXBCQpODsWChQBCTAABho"
+#define SECRET_MQTT_USERNAME "CCIXBCQpODsWChQBCTAABho"
+#define SECRET_MQTT_PASSWORD "JInyrhufB+vNJfGmIf/6Tl8H"
 
 WiFiClient myClient;
 WiFiClientSecure httpsClient;
 ESP8266WebServer httpServer(80);
 PubSubClient mqttClient;
 
-#define WIFI_SSID "MJU_Wireless"
-#define WIFI_PWD  ""
-//#define WIFI_SSID "U+Net9700"
-//#define WIFI_PWD  "HB797@0FE6"
+//#define WIFI_SSID "MJU_Wireless"
+//#define WIFI_PWD  ""
+#define WIFI_SSID "U+Net9700"
+#define WIFI_PWD  "HB797@0FE6"
 //#define WIFI_SSID "ipTIME Guest1"
 //#define WIFI_PWD  "12341234"
 
@@ -147,7 +142,8 @@ void fnSendMsg(void) {
   strcat(tmpBuffer, "<a href=/>돌아가기</a><br>\r\n");                   //Root 페이지 링크
   snprintf(tmpBuffer, sizeof(tmpBuffer), "%s%s", tmpBuffer, "</html>");
   httpServer.send(200, "text/html", tmpBuffer);
-  mqttClient.publish("channels/1737977/publish/fields/field2", "1");    //MQTT Field2에 PUB
+  int pubResult = mqttClient.publish("channels/1737977/publish/fields/field2", "1");    //MQTT Field2에 PUB
+  Serial.printf("pubResult : %d\r\n", pubResult);
 }
 //오류 페이지
 void fnNotFound(void) {
