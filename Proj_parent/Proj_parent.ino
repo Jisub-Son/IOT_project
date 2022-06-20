@@ -12,14 +12,8 @@
 #define SECRET_MQTT_PASSWORD "JInyrhufB+vNJfGmIf/6Tl8H"
 
 // define WiFi
-//#define WIFI_SSID "MJU_Wireless"
-//#define WIFI_PWD  ""
-//#define WIFI_SSID "U+Net9700"
-//#define WIFI_PWD  "HB797@0FE6"
-//#define WIFI_SSID "ipTIME Guest1"
-//#define WIFI_PWD  "12341234"
-#define WIFI_SSID "SJS"
-#define WIFI_PWD  "19980304"
+#define WIFI_SSID "MJU_Wireless"
+#define WIFI_PWD  ""
 
 // define IFTTT
 #define IFTTT_WH_KEY "ctPKZOb5dEI3PetYB3amwa"
@@ -39,8 +33,7 @@ DynamicJsonDocument doc(8192);
 const char *host = "kr.api.riotgames.com";
 const int httpsPort = 443;
 String apiAddr = "/lol/summoner/v4/summoners/by-name/";
-String apiKey = "RGAPI-2b6e0c3f-3416-4563-af8d-7934e9acb8f3";   // -> 만료됨
-//String apiKey = "RGAPI-1280cd2e-5488-44c8-9b00-5a379eff9df7"; // -> 재발급한 key : 웹서버에서 복붙하세요
+String apiKey = "RGAPI-1280cd2e-5488-44c8-9b00-5a379eff9df7";
 
 String summoner = "섬%20벙";    //초기 추적 닉네임 '추적닉네임'
 String summoner_show = "섬 벙"; //초기 추적 닉네임의 웹서버 표시명 '표시닉네임'

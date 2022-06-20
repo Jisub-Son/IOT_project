@@ -9,15 +9,9 @@
 #define SECRET_MQTT_USERNAME "EjolJjkAGiYCISw5AhQZKxw"
 #define SECRET_MQTT_PASSWORD "CCEYGlQuMgjHXaOpjDXIiK7L"
 
-// define WiFi5
-//#define WIFI_SSID "U+Net9700"
-//#define WIFI_PWD  "HB797@0FE6"
-//#define WIFI_SSID "ipTIME Guest1"
-//#define WIFI_PWD  "12341234"
-//#define WIFI_SSID "MJU_Wireless"
-//#define WIFI_PWD  ""
-#define WIFI_SSID "SJS"
-#define WIFI_PWD  "19980304"
+// define WiFi
+#define WIFI_SSID "MJU_Wireless"
+#define WIFI_PWD  ""
 
 // define IFTTT
 #define IFTTT_KEY_SJS "TAHf6d1iVRTvH1yfFsaBd"
@@ -97,7 +91,6 @@ void loop()
 
     Wire.requestFrom(MPU_Addr, 2, true); // Request 2Byte data
     AcZ = Wire.read() << 8 | Wire.read(); // ACCEL_ZOUT
-//    Serial.printf("%d\r\n", AcZ);
 
     // Set shotgun 1 when gamer smashed the desk
     if (AcZ >= 20000) {
