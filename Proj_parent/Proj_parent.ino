@@ -117,7 +117,7 @@ void fnStatus(void) {
   if (login_stat == 404) {
     strcpy(tmpBuffer, "<meta charset=utf-8><html>\r\n");                            //한글표시가능
     strcat(tmpBuffer, "<audio autoplay><source src=\"https:/");                     //사운드 자동출력
-    strcat(tmpBuffer, "/s3.us-west-2.amazonaws.com/secure.notion-static.com/11343706-8edc-45ca-9076-64ae27b52f39/tcssca00.wav?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220619%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220619T074941Z&X-Amz-Expires=86400&X-Amz-Signature=361c789b8cd8e8de8d8ede01d4cea4163f64733feabb3ca6cf15063a7f8f6181&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22tcssca00.wav%22&x-id=GetObject\" type=\"audio/wav\"></audio><br>\r\n");
+    strcat(tmpBuffer, "/www.hiveworkshop.com/data/ratory-downloadables/af54551d203eed99e6bd3fa598ded0c1-1655779191-600/tcssca00.wav\" type=\"audio/wav\"></audio><br>\r\n");
     strcat(tmpBuffer, "자녀분이 게임을 하고있지'는' 않습니다<br>\r\n");                //일반텍스트 출력
     strcat(tmpBuffer, "<a href=/>돌아가기</a><br>\r\n");                             //Root 페이지 링크
     strcat(tmpBuffer, "<a href=/sendMsg>그래도 게임하지 말라고 알리기</a><br>\r\n");   //sendMsg 페이지 링크
@@ -128,7 +128,7 @@ void fnStatus(void) {
   if (game_id != 0) {
     strcpy(tmpBuffer, "<meta charset=utf-8><html>\r\n");                       //한글표시가능
     strcat(tmpBuffer, "<audio autoplay><source src=\"https:/");               //사운드 자동출력
-    strcat(tmpBuffer, "/s3.us-west-2.amazonaws.com/secure.notion-static.com/11343706-8edc-45ca-9076-64ae27b52f39/tcssca00.wav?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220619%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220619T074941Z&X-Amz-Expires=86400&X-Amz-Signature=361c789b8cd8e8de8d8ede01d4cea4163f64733feabb3ca6cf15063a7f8f6181&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22tcssca00.wav%22&x-id=GetObject\" type=\"audio/wav\"></audio><br>\r\n");
+    strcat(tmpBuffer, "/www.hiveworkshop.com/data/ratory-downloadables/af54551d203eed99e6bd3fa598ded0c1-1655779191-600/tcssca00.wav\" type=\"audio/wav\"></audio><br>\r\n");
     strcat(tmpBuffer, "축하드립니다! 자녀분이 게임중입니다!<br>\r\n");           //일반텍스트 출력
     strcat(tmpBuffer, "<a href=/>돌아가기</a><br>\r\n");                       //Root 페이지 링크
     strcat(tmpBuffer, "<a href=/sendMsg>게임하지 말라고 알리기</a><br>\r\n");   //sendMsg 페이지 링크
@@ -139,7 +139,7 @@ void fnStatus(void) {
   else{
     strcpy(tmpBuffer, "<meta charset=utf-8><html>\r\n");                       //한글표시가능
     strcat(tmpBuffer, "<audio autoplay><source src=\"https:/");                //사운드 자동출력
-    strcat(tmpBuffer, "/s3.us-west-2.amazonaws.com/secure.notion-static.com/11343706-8edc-45ca-9076-64ae27b52f39/tcssca00.wav?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220619%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220619T074941Z&X-Amz-Expires=86400&X-Amz-Signature=361c789b8cd8e8de8d8ede01d4cea4163f64733feabb3ca6cf15063a7f8f6181&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22tcssca00.wav%22&x-id=GetObject\" type=\"audio/wav\"></audio><br>\r\n");
+    strcat(tmpBuffer, "/www.hiveworkshop.com/data/ratory-downloadables/af54551d203eed99e6bd3fa598ded0c1-1655779191-600/tcssca00.wav\" type=\"audio/wav\"></audio><br>\r\n");
     strcat(tmpBuffer, "[오류]접속상태 확인 중 오류가 발생했습니다.<br>\r\n");     //일반텍스트 출력
     strcat(tmpBuffer, "<a href=/>돌아가기</a><br>\r\n");                       //Root 페이지 링크
     snprintf(tmpBuffer, sizeof(tmpBuffer), "%s%s", tmpBuffer, "</html>");
