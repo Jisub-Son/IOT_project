@@ -12,8 +12,10 @@
 #define SECRET_MQTT_PASSWORD "JInyrhufB+vNJfGmIf/6Tl8H"
 
 // define WiFi
-#define WIFI_SSID "MJU_Wireless"
-#define WIFI_PWD  ""
+//#define WIFI_SSID "MJU_Wireless"
+//#define WIFI_PWD  ""
+#define WIFI_SSID "SJS"
+#define WIFI_PWD  "19980304"
 
 // define IFTTT
 #define IFTTT_WH_KEY "ctPKZOb5dEI3PetYB3amwa"
